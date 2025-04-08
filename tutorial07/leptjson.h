@@ -10,17 +10,17 @@ typedef struct lept_member lept_member;
 
 struct lept_value {
     union {
-        struct { lept_member* m; size_t size; }o;   /* object: members, member count */
-        struct { lept_value* e; size_t size; }a;    /* array:  elements, element count */
-        struct { char* s; size_t len; }s;           /* string: null-terminated string, string length */
-        double n;                                   /* number */
+        struct { lept_member* members; size_t size; }object;   /* object: members, member count */
+        struct { lept_value* elements; size_t size; }array;    /* array:  elements, element count */
+        struct { char* str; size_t len; }string;           /* string: null-terminated string, string length */
+        double number;                                   /* number */
     }u;
     lept_type type;
 };
 
 struct lept_member {
-    char* k; size_t klen;   /* member key string, key string length */
-    lept_value v;           /* member value */
+    char* key; size_t klen;   /* member key string, key string length */
+    lept_value val;           /* member value */
 };
 
 enum {

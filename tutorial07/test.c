@@ -35,7 +35,7 @@ static int test_pass = 0;
 #define EXPECT_EQ_SIZE_T(expect, actual) EXPECT_EQ_BASE((expect) == (actual), (size_t)expect, (size_t)actual, "%zu")
 #endif
 
-static void test_parse_null() {
+static void test_parse_null(void) {
     lept_value v;
     lept_init(&v);
     lept_set_boolean(&v, 0);
@@ -44,7 +44,7 @@ static void test_parse_null() {
     lept_free(&v);
 }
 
-static void test_parse_true() {
+static void test_parse_true(void) {
     lept_value v;
     lept_init(&v);
     lept_set_boolean(&v, 0);
@@ -53,7 +53,7 @@ static void test_parse_true() {
     lept_free(&v);
 }
 
-static void test_parse_false() {
+static void test_parse_false(void) {
     lept_value v;
     lept_init(&v);
     lept_set_boolean(&v, 1);
@@ -72,7 +72,7 @@ static void test_parse_false() {
         lept_free(&v);\
     } while(0)
 
-static void test_parse_number() {
+static void test_parse_number(void) {
     TEST_NUMBER(0.0, "0");
     TEST_NUMBER(0.0, "-0");
     TEST_NUMBER(0.0, "-0.0");
@@ -114,7 +114,7 @@ static void test_parse_number() {
         lept_free(&v);\
     } while(0)
 
-static void test_parse_string() {
+static void test_parse_string(void) {
     TEST_STRING("", "\"\"");
     TEST_STRING("Hello", "\"Hello\"");
     TEST_STRING("Hello\nWorld", "\"Hello\\nWorld\"");
@@ -127,7 +127,7 @@ static void test_parse_string() {
     TEST_STRING("\xF0\x9D\x84\x9E", "\"\\ud834\\udd1e\"");  /* G clef sign U+1D11E */
 }
 
-static void test_parse_array() {
+static void test_parse_array(void) {
     size_t i, j;
     lept_value v;
 
@@ -167,7 +167,7 @@ static void test_parse_array() {
     lept_free(&v);
 }
 
-static void test_parse_object() {
+static void test_parse_object(void) {
     lept_value v;
     size_t i;
 
@@ -236,12 +236,12 @@ static void test_parse_object() {
         lept_free(&v);\
     } while(0)
 
-static void test_parse_expect_value() {
+static void test_parse_expect_value(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_EXPECT_VALUE, "");
     TEST_PARSE_ERROR(LEPT_PARSE_EXPECT_VALUE, " ");
 }
 
-static void test_parse_invalid_value() {
+static void test_parse_invalid_value(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_VALUE, "nul");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_VALUE, "?");
 
@@ -260,7 +260,7 @@ static void test_parse_invalid_value() {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_VALUE, "[\"a\", nul]");
 }
 
-static void test_parse_root_not_singular() {
+static void test_parse_root_not_singular(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_ROOT_NOT_SINGULAR, "null x");
 
     /* invalid number */
@@ -269,29 +269,29 @@ static void test_parse_root_not_singular() {
     TEST_PARSE_ERROR(LEPT_PARSE_ROOT_NOT_SINGULAR, "0x123");
 }
 
-static void test_parse_number_too_big() {
+static void test_parse_number_too_big(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_NUMBER_TOO_BIG, "1e309");
     TEST_PARSE_ERROR(LEPT_PARSE_NUMBER_TOO_BIG, "-1e309");
 }
 
-static void test_parse_miss_quotation_mark() {
+static void test_parse_miss_quotation_mark(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_QUOTATION_MARK, "\"");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_QUOTATION_MARK, "\"abc");
 }
 
-static void test_parse_invalid_string_escape() {
+static void test_parse_invalid_string_escape(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE, "\"\\v\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE, "\"\\'\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE, "\"\\0\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_STRING_ESCAPE, "\"\\x12\"");
 }
 
-static void test_parse_invalid_string_char() {
+static void test_parse_invalid_string_char(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_STRING_CHAR, "\"\x01\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_STRING_CHAR, "\"\x1F\"");
 }
 
-static void test_parse_invalid_unicode_hex() {
+static void test_parse_invalid_unicode_hex(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX, "\"\\u\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX, "\"\\u0\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX, "\"\\u01\"");
@@ -307,7 +307,7 @@ static void test_parse_invalid_unicode_hex() {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_HEX, "\"\\u 123\"");
 }
 
-static void test_parse_invalid_unicode_surrogate() {
+static void test_parse_invalid_unicode_surrogate(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE, "\"\\uD800\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE, "\"\\uDBFF\"");
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE, "\"\\uD800\\\\\"");
@@ -315,14 +315,14 @@ static void test_parse_invalid_unicode_surrogate() {
     TEST_PARSE_ERROR(LEPT_PARSE_INVALID_UNICODE_SURROGATE, "\"\\uD800\\uE000\"");
 }
 
-static void test_parse_miss_comma_or_square_bracket() {
+static void test_parse_miss_comma_or_square_bracket(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1}");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[1 2");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET, "[[]");
 }
 
-static void test_parse_miss_key() {
+static void test_parse_miss_key(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_KEY, "{:1,");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_KEY, "{1:1,");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_KEY, "{true:1,");
@@ -333,19 +333,19 @@ static void test_parse_miss_key() {
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_KEY, "{\"a\":1,");
 }
 
-static void test_parse_miss_colon() {
+static void test_parse_miss_colon(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COLON, "{\"a\"}");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COLON, "{\"a\",\"b\"}");
 }
 
-static void test_parse_miss_comma_or_curly_bracket() {
+static void test_parse_miss_comma_or_curly_bracket(void) {
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_CURLY_BRACKET, "{\"a\":1");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_CURLY_BRACKET, "{\"a\":1]");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_CURLY_BRACKET, "{\"a\":1 \"b\"");
     TEST_PARSE_ERROR(LEPT_PARSE_MISS_COMMA_OR_CURLY_BRACKET, "{\"a\":{}");
 }
 
-static void test_parse() {
+static void test_parse(void) {
     test_parse_null();
     test_parse_true();
     test_parse_false();
@@ -382,7 +382,7 @@ static void test_parse() {
         free(json2);\
     } while(0)
 
-static void test_stringify_number() {
+static void test_stringify_number(void) {
     TEST_ROUNDTRIP("0");
     TEST_ROUNDTRIP("-0");
     TEST_ROUNDTRIP("1");
@@ -405,7 +405,7 @@ static void test_stringify_number() {
     TEST_ROUNDTRIP("-1.7976931348623157e+308");
 }
 
-static void test_stringify_string() {
+static void test_stringify_string(void) {
     TEST_ROUNDTRIP("\"\"");
     TEST_ROUNDTRIP("\"Hello\"");
     TEST_ROUNDTRIP("\"Hello\\nWorld\"");
@@ -413,17 +413,17 @@ static void test_stringify_string() {
     TEST_ROUNDTRIP("\"Hello\\u0000World\"");
 }
 
-static void test_stringify_array() {
+static void test_stringify_array(void) {
     TEST_ROUNDTRIP("[]");
     TEST_ROUNDTRIP("[null,false,true,123,\"abc\",[1,2,3]]");
 }
 
-static void test_stringify_object() {
+static void test_stringify_object(void) {
     TEST_ROUNDTRIP("{}");
     TEST_ROUNDTRIP("{\"n\":null,\"f\":false,\"t\":true,\"i\":123,\"s\":\"abc\",\"a\":[1,2,3],\"o\":{\"1\":1,\"2\":2,\"3\":3}}");
 }
 
-static void test_stringify() {
+static void test_stringify(void) {
     TEST_ROUNDTRIP("null");
     TEST_ROUNDTRIP("false");
     TEST_ROUNDTRIP("true");
@@ -433,7 +433,7 @@ static void test_stringify() {
     test_stringify_object();
 }
 
-static void test_access_null() {
+static void test_access_null(void) {
     lept_value v;
     lept_init(&v);
     lept_set_string(&v, "a", 1);
@@ -442,7 +442,7 @@ static void test_access_null() {
     lept_free(&v);
 }
 
-static void test_access_boolean() {
+static void test_access_boolean(void) {
     lept_value v;
     lept_init(&v);
     lept_set_string(&v, "a", 1);
@@ -453,7 +453,7 @@ static void test_access_boolean() {
     lept_free(&v);
 }
 
-static void test_access_number() {
+static void test_access_number(void) {
     lept_value v;
     lept_init(&v);
     lept_set_string(&v, "a", 1);
@@ -462,7 +462,7 @@ static void test_access_number() {
     lept_free(&v);
 }
 
-static void test_access_string() {
+static void test_access_string(void) {
     lept_value v;
     lept_init(&v);
     lept_set_string(&v, "", 0);
@@ -472,14 +472,14 @@ static void test_access_string() {
     lept_free(&v);
 }
 
-static void test_access() {
+static void test_access(void) {
     test_access_null();
     test_access_boolean();
     test_access_number();
     test_access_string();
 }
 
-int main() {
+int main(void) {
 #ifdef _WINDOWS
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
